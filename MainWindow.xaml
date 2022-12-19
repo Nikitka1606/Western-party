@@ -1,0 +1,19 @@
+﻿<Window x:Name="Main" x:Class="Western.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Western"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Background="Black" Topmost="True" >
+    <Grid>
+        <Button x:Name="Settings" Content="Settings" HorizontalAlignment="Left" Margin="119,233,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.486,1.735" Click="Settings_Click" Height="71" Width="128"/>
+        <Button x:Name="Start" Content="Start" HorizontalAlignment="Center" Margin="0,233,0,0" VerticalAlignment="Top" Background="White" Click="Start_Click" Height="71" Width="140">
+            <Button.Style>
+                <Style/>
+            </Button.Style>
+        </Button>
+        <Button x:Name="Info" Content="Info" HorizontalAlignment="Left" Margin="554,233,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.643,-0.138" Click="Info_Click" Height="71" Width="127"/>
+        <Label Content="Western Party" HorizontalAlignment="Left" Margin="268,144,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="White" FontSize="36"/>
+    </Grid>
+</Window>
