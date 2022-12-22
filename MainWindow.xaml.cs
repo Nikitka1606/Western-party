@@ -18,8 +18,11 @@ namespace Western
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+
+    
     public partial class MainWindow : Window
     {
+        static public double difficulty = 1;
         public MainWindow()
         {
             InitializeComponent();
@@ -45,8 +48,15 @@ namespace Western
         {
             Information win = new Information();
             win.Topmost = true;
-            this.Close();
             win.Show();
+        }
+
+        private void Difficulty_Click(object sender, RoutedEventArgs e)
+        {
+            difficulty++;
+            if (difficulty > 3) difficulty = 1;
+            InitializeComponent();
+            diff_text.Content = difficulty.ToString();
         }
     }
 }

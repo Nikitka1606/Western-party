@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\halni\\Desktop\\Курсач\\Western\\Western.csproj",
+      "projectUniqueName": "C:\\Users\\halni\\Documents\\GitHub\\Western-party\\Western.csproj",
       "projectName": "Western",
-      "projectPath": "C:\\Users\\halni\\Desktop\\Курсач\\Western\\Western.csproj",
+      "projectPath": "C:\\Users\\halni\\Documents\\GitHub\\Western-party\\Western.csproj",
       "packagesPath": "C:\\Users\\halni\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\halni\\Desktop\\Курсач\\Western\\obj\\",
+      "outputPath": "C:\\Users\\halni\\Documents\\GitHub\\Western-party\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

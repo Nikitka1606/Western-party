@@ -44,7 +44,7 @@ namespace Western
         static double max_width = 650 - 50;
         static double min_height = 50;
         static double min_width = 50;
-        static double players_scale = 1.5;
+        static double players_scale = 0;
 
         //player 1 variables
         static int angle_p1 = 0;
@@ -103,6 +103,7 @@ namespace Western
         List<Polygon> bullet = new List<Polygon>();
         static bool[] IsBulletFlying = {false, false, false, false, false, false, false, false, false, false, false, false };
         int bulletc = -1;
+        static bool shotable = true;
 
         public Game()
         {
@@ -112,6 +113,29 @@ namespace Western
             timer.Interval = new TimeSpan(0, 0, 0, 0, 1);
             timer.Start();
 
+            InitializeComponent();
+            match_end_text.IsEnabled = true;
+
+            switch (MainWindow.difficulty)
+            {
+                case 1: players_scale = 1.8; break;
+                case 2: players_scale = 1.4; break;
+                case 3: players_scale = 1; break;
+            }
+
+            x1_p1 = x0_p1 - 15 * players_scale;
+            y1_p1 = y0_p1 + 27 * players_scale;
+            x2_p1 = x0_p1;
+            y2_p1 = y0_p1 - 8 * players_scale;
+            x3_p1 = x0_p1 + 15 * players_scale;
+            y3_p1 = y0_p1 + 27 * players_scale;
+
+            x1_p2 = x0_p2 - 15 * players_scale;
+            y1_p2 = y0_p2 - 27 * players_scale;
+            x2_p2 = x0_p2;
+            y2_p2 = y0_p2 + 8 * players_scale;
+            x3_p2 = x0_p2 + 15 * players_scale;
+            y3_p2 = y0_p2 - 27 * players_scale;
 
             //отрисовка игроков
             p1.Points.Add(left_p1);
@@ -176,18 +200,6 @@ namespace Western
             velocityY_p2 = (y2_p2 - y0_p2) * speed * deltaTime;
         }
 
-        private void p1_win()
-        {
-            InitializeComponent();
-            rounds_end_text.Text = "Player 1 win";
-        }
-
-        private void p2_win()
-        {
-            InitializeComponent();
-            rounds_end_text.Text = "Player 2 win";
-        }
-
         //функции сброса позиций игроков
         private void reset_p1()
         {
@@ -230,8 +242,9 @@ namespace Western
                 IsBulletFlying[i] = false;
                 Field.Children.Remove(bullet[i]);
                 bullet[i].Points.Remove(bullet_coord1[i]);
-                bullet[i].Points.Remove(bullet_coord2[i]);
+                bullet[i].Points.Remove(bullet_coord2[i]); 
             }
+            
             bullet_coord1.Clear();
             bullet_coord2.Clear();
             bullet.Clear();
@@ -243,6 +256,30 @@ namespace Western
             bullet_p2_count = 0;
             last_bullet_collised = false;
         }
+        
+        private void general_reset()
+        {            
+            rounds_win_count_p1 = 0;
+            rounds_win_count_p2 = 0;
+            points_per_round_p1 = 0;
+            points_per_round_p2 = 0;
+            bullet_p1_count = 0;
+            bullet_p2_count = 0;
+            shotable = true;
+            bullet.Clear();
+            InitializeComponent();
+            rounds_p1_1.Fill = default;
+            rounds_p1_2.Fill = default;
+            rounds_p1_3.Fill = default;
+            rounds_p1_4.Fill = default;
+            rounds_p1_5.Fill = default;
+            rounds_p2_1.Fill = default;
+            rounds_p2_2.Fill = default;
+            rounds_p2_3.Fill = default;
+            rounds_p2_4.Fill = default;
+            rounds_p2_5.Fill = default;
+        }
+        
         //функция появления пули
         private void Bullet()
         {
@@ -268,8 +305,7 @@ namespace Western
                 shot_p1 = false;
             }
 
-            if (shot_p2 && velocityX_p2 * velocityY_p2 != 0
-                )
+            if (shot_p2 && velocityX_p2 * velocityY_p2 != 0)
             {
                 bullet_p2_count++;
                 bulletc++;
@@ -293,233 +329,237 @@ namespace Western
         }
         private void MainGameTimerEvent(object sender, EventArgs e)
         {
-            Stopwatch time = new Stopwatch();
-            time.Start();
-            if (rotation_p1)
-            {
-                angle_p1 += 3;
-                if (angle_p1 >= 360) angle_p1 -= 360;
-                angle_rad = (angle_p1 * Math.PI) / 180;
-                rotate_p1();
-            }
+                if (rotation_p1)
+                {
+                    angle_p1 += 3;
+                    if (angle_p1 >= 360) angle_p1 -= 360;
+                    angle_rad = (angle_p1 * Math.PI) / 180;
+                    rotate_p1();
+                }
 
-            if (rotation_p2)
-            {
-                angle_p2 += 3;
-                if (angle_p2 >= 360) angle_p2 -= 360;
-                angle_rad = (angle_p2 * Math.PI) / 180;
-                rotate_p2();
-            }
-            //коллизии со стенками
-            if (x2_p1 <= min_width || x2_p1 >= max_width)
-            {
-                velocityX_p1 = 0;
-                if ((x2_p1 <= min_width && (x2_p1 - x0_p1) > 0) || (x2_p1 >= max_width && (x2_p1 - x0_p1) < 0))
-                    velocityX_p1 = (x2_p1 - x0_p1) * speed * deltaTime;
-                if (x2_p1 - x0_p1 == 0)
+                if (rotation_p2)
+                {
+                    angle_p2 += 3;
+                    if (angle_p2 >= 360) angle_p2 -= 360;
+                    angle_rad = (angle_p2 * Math.PI) / 180;
+                    rotate_p2();
+                }
+                //коллизии со стенками
+                if (x0_p1 - 12 <= min_width || x0_p1 + 12 >= max_width)
+                {
                     velocityX_p1 = 0;
-            }
-            if (y2_p1 <= min_height || y2_p1 >= max_height)
-            {
-                velocityY_p1 = 0;
-                if ((y2_p1 <= min_height && y2_p1 - y0_p1 > 0 || y2_p1 >= max_height && y2_p1 - y0_p1 < 0))
-                    velocityY_p1 = (y2_p1 - y0_p1) * speed * deltaTime;
-                if (y2_p1 - y0_p1 == 0)
+                    if ((x0_p1 - 12 <= min_width && (x2_p1 - x0_p1) > 0) || (x0_p1 + 12 >= max_width && (x2_p1 - x0_p1) < 0))
+                        velocityX_p1 = (x2_p1 - x0_p1) * speed * deltaTime;
+                    if (x2_p1 - x0_p1 == 0)
+                        velocityX_p1 = 0;
+                }
+                if (y0_p1 - 12 <= min_height || y0_p1 + 12 >= max_height)
+                {
                     velocityY_p1 = 0;
-            }
+                    if ((y0_p1 - 12 <= min_height && y2_p1 - y0_p1 > 0 || y0_p1 + 12 >= max_height && y2_p1 - y0_p1 < 0))
+                        velocityY_p1 = (y2_p1 - y0_p1) * speed * deltaTime;
+                    if (y2_p1 - y0_p1 == 0)
+                        velocityY_p1 = 0;
+                }
 
-            if (x2_p2 <= min_width || x2_p2 >= max_width)
-            {
-                velocityX_p2 = 0;
-                if ((x2_p2 <= min_width && (x2_p2 - x0_p2) > 0) || (x2_p2 >= max_width && (x2_p2 - x0_p2) < 0))
-                    velocityX_p2 = (x2_p2 - x0_p2) * speed * deltaTime;
-                if (x2_p2 - x0_p2 == 0)
+                if (x0_p2 - 12 <= min_width || x0_p2 + 12 >= max_width)
+                {
                     velocityX_p2 = 0;
-            }
-            if (y2_p2 <= min_height || y2_p2 >= max_height)
-            {
-                velocityY_p2 = 0;
-                if ((y2_p2 <= min_height && y2_p2 - y0_p2 > 0 || y2_p2 >= max_height && y2_p2 - y0_p2 < 0))
-                    velocityY_p2 = (y2_p2 - y0_p2) * speed * deltaTime;
-                if (y2_p2 - y0_p2 == 0)
+                    if ((x0_p2 - 12 <= min_width && (x2_p2 - x0_p2) > 0) || (x0_p2 + 12 >= max_width && (x2_p2 - x0_p2) < 0))
+                        velocityX_p2 = (x2_p2 - x0_p2) * speed * deltaTime;
+                    if (x2_p2 - x0_p2 == 0)
+                        velocityX_p2 = 0;
+                }
+                if (y0_p2 - 12 <= min_height || y0_p2 + 12 >= max_height)
+                {
                     velocityY_p2 = 0;
-            }
+                    if ((y0_p2 - 12 <= min_height && y2_p2 - y0_p2 > 0 || y0_p2 + 12 >= max_height && y2_p2 - y0_p2 < 0))
+                        velocityY_p2 = (y2_p2 - y0_p2) * speed * deltaTime;
+                    if (y2_p2 - y0_p2 == 0)
+                        velocityY_p2 = 0;
+                }
 
-            for (int i = 0; i < 12; i++)
-            {
-                if (IsBulletFlying[i])
+                for (int i = 0; i < 12; i++)
                 {
-                    //пересчёт положения пули, её отрисовка
-                    Field.Children.Remove(bullet[i]);
-                    bullet[i].Points.Remove(bullet_coord1[i]);
-                    bullet[i].Points.Remove(bullet_coord2[i]);
-
-                    Point costc1 = new Point(bullet_coord1[i].X + bullet_velocityX[i] * deltaTime, bullet_coord1[i].Y + bullet_velocityY[i] * deltaTime);
-                    Point costc2 = new Point(bullet_coord2[i].X + bullet_velocityX[i] * deltaTime, bullet_coord2[i].Y + bullet_velocityY[i] * deltaTime);
-
-                    bullet_coord1[i] = costc1;
-                    bullet_coord2[i] = costc2;
-
-                    bullet[i].Points.Add(bullet_coord1[i]);
-                    bullet[i].Points.Add(bullet_coord2[i]);
-                    Field.Children.Add(bullet[i]);
-
-
-                    if (costc2.X <= min_width || costc2.Y <= min_height || costc2.X >= max_width || costc2.Y >= max_height)
+                    if (IsBulletFlying[i])
                     {
+                        //пересчёт положения пули, её отрисовка
                         Field.Children.Remove(bullet[i]);
                         bullet[i].Points.Remove(bullet_coord1[i]);
                         bullet[i].Points.Remove(bullet_coord2[i]);
-                        IsBulletFlying[i] = false;
-                        if (bulletc == 11) last_bullet_collised = true;
+
+                        Point costc1 = new Point(bullet_coord1[i].X + bullet_velocityX[i] * deltaTime, bullet_coord1[i].Y + bullet_velocityY[i] * deltaTime);
+                        Point costc2 = new Point(bullet_coord2[i].X + bullet_velocityX[i] * deltaTime, bullet_coord2[i].Y + bullet_velocityY[i] * deltaTime);
+
+                        bullet_coord1[i] = costc1;
+                        bullet_coord2[i] = costc2;
+
+                        bullet[i].Points.Add(bullet_coord1[i]);
+                        bullet[i].Points.Add(bullet_coord2[i]);
+                        Field.Children.Add(bullet[i]);
+
+
+                        if (costc2.X <= min_width || costc2.Y <= min_height || costc2.X >= max_width || costc2.Y >= max_height)
+                        {
+                            Field.Children.Remove(bullet[i]);
+                            bullet[i].Points.Remove(bullet_coord1[i]);
+                            bullet[i].Points.Remove(bullet_coord2[i]);
+                            IsBulletFlying[i] = false;
+                            if (bulletc == 11) last_bullet_collised = true;
+                        }
+
+                        double a_collision_p1 = (x1_p1 - bullet_coord1[i].X) * (y2_p1 - y1_p1) - (x2_p1 - x1_p1) * (y1_p1 - bullet_coord1[i].Y);
+                        double b_collision_p1 = (x2_p1 - bullet_coord1[i].X) * (y3_p1 - y2_p1) - (x3_p1 - x2_p1) * (y2_p1 - bullet_coord1[i].Y);
+                        double c_collision_p1 = (x3_p1 - bullet_coord1[i].X) * (y1_p1 - y3_p1) - (x1_p1 - x3_p1) * (y3_p1 - bullet_coord1[i].Y);
+
+                        double a_collision_p2 = (x1_p2 - bullet_coord1[i].X) * (y2_p2 - y1_p2) - (x2_p2 - x1_p2) * (y1_p2 - bullet_coord1[i].Y);
+                        double b_collision_p2 = (x2_p2 - bullet_coord1[i].X) * (y3_p2 - y2_p2) - (x3_p2 - x2_p2) * (y2_p2 - bullet_coord1[i].Y);
+                        double c_collision_p2 = (x3_p2 - bullet_coord1[i].X) * (y1_p2 - y3_p2) - (x1_p2 - x3_p2) * (y3_p2 - bullet_coord1[i].Y);
+
+                        //коллизия с пулей
+                        if (a_collision_p1 >= 0 && b_collision_p1 >= 0 && c_collision_p1 >= 0 || a_collision_p1 <= 0 && b_collision_p1 <= 0 && c_collision_p1 <= 0)
+                        {
+                            reset_p1();
+                            points_per_round_p2++;
+                            InitializeComponent();
+                            rounds_text_p2.Text = points_per_round_p2.ToString();
+                            Field.Children.Remove(bullet[i]);
+                            bullet[i].Points.Remove(bullet_coord1[i]);
+                            bullet[i].Points.Remove(bullet_coord2[i]);
+                            IsBulletFlying[i] = false;
+                            if (bulletc == 11) last_bullet_collised = true;
+                        }
+
+                        if (a_collision_p2 >= 0 && b_collision_p2 >= 0 && c_collision_p2 >= 0 || a_collision_p2 <= 0 && b_collision_p2 <= 0 && c_collision_p2 <= 0)
+                        {
+                            reset_p2();
+                            points_per_round_p1++;
+                            InitializeComponent();
+                            rounds_text_p1.Text = points_per_round_p1.ToString();
+                            Field.Children.Remove(bullet[i]);
+                            bullet[i].Points.Remove(bullet_coord1[i]);
+                            bullet[i].Points.Remove(bullet_coord2[i]);
+                            IsBulletFlying[i] = false;
+                            if (bulletc == 11) last_bullet_collised = true;
+                        }
+                    }
+                }
+
+                Field.Children.Remove(p1);
+                p1.Points.Remove(left_p1);
+                p1.Points.Remove(nose_p1);
+                p1.Points.Remove(right_p1);
+
+                Field.Children.Remove(p2);
+                p2.Points.Remove(left_p2);
+                p2.Points.Remove(nose_p2);
+                p2.Points.Remove(right_p2);
+
+                x0_p1 += velocityX_p1;
+                y0_p1 += velocityY_p1;
+                x2_p1 += velocityX_p1;
+                y2_p1 += velocityY_p1;
+                x1_p1 += velocityX_p1;
+                y1_p1 += velocityY_p1;
+                x3_p1 += velocityX_p1;
+                y3_p1 += velocityY_p1;
+
+                x0_p2 += velocityX_p2;
+                y0_p2 += velocityY_p2;
+                x2_p2 += velocityX_p2;
+                y2_p2 += velocityY_p2;
+                x1_p2 += velocityX_p2;
+                y1_p2 += velocityY_p2;
+                x3_p2 += velocityX_p2;
+                y3_p2 += velocityY_p2;
+
+                left_p1.X = x1_p1;
+                left_p1.Y = y1_p1;
+                nose_p1.X = x2_p1;
+                nose_p1.Y = y2_p1;
+                right_p1.X = x3_p1;
+                right_p1.Y = y3_p1;
+
+                left_p2.X = x1_p2;
+                left_p2.Y = y1_p2;
+                nose_p2.X = x2_p2;
+                nose_p2.Y = y2_p2;
+                right_p2.X = x3_p2;
+                right_p2.Y = y3_p2;
+
+                p1.Points.Add(left_p1);
+                p1.Points.Add(nose_p1);
+                p1.Points.Add(right_p1);
+                Field.Children.Add(p1);
+
+                p2.Points.Add(left_p2);
+                p2.Points.Add(nose_p2);
+                p2.Points.Add(right_p2);
+                Field.Children.Add(p2);
+
+                if (bulletc == 11 && last_bullet_collised)
+                {
+                    reset_p1();
+                    reset_p2();
+                    reset_bullet();
+
+                    if (points_per_round_p1 > points_per_round_p2)
+                    {
+                        rounds_win_count_p1++;
+                        switch (rounds_win_count_p1)
+                        {
+                            case 1:
+                                rounds_p1_1.Fill = Brushes.Black; break;
+                            case 2:
+                                rounds_p1_2.Fill = Brushes.Black; break;
+                            case 3:
+                                rounds_p1_3.Fill = Brushes.Black; break;
+                            case 4:
+                                rounds_p1_4.Fill = Brushes.Black; break;
+                            case 5:
+                                rounds_p1_5.Fill = Brushes.Black; break;
+                        }
                     }
 
-                    double a_collision_p1 = (x1_p1 - bullet_coord1[i].X) * (y2_p1 - y1_p1) - (x2_p1 - x1_p1) * (y1_p1 - bullet_coord1[i].Y);
-                    double b_collision_p1 = (x2_p1 - bullet_coord1[i].X) * (y3_p1 - y2_p1) - (x3_p1 - x2_p1) * (y2_p1 - bullet_coord1[i].Y);
-                    double c_collision_p1 = (x3_p1 - bullet_coord1[i].X) * (y1_p1 - y3_p1) - (x1_p1 - x3_p1) * (y3_p1 - bullet_coord1[i].Y);
-
-                    double a_collision_p2 = (x1_p2 - bullet_coord1[i].X) * (y2_p2 - y1_p2) - (x2_p2 - x1_p2) * (y1_p2 - bullet_coord1[i].Y);
-                    double b_collision_p2 = (x2_p2 - bullet_coord1[i].X) * (y3_p2 - y2_p2) - (x3_p2 - x2_p2) * (y2_p2 - bullet_coord1[i].Y);
-                    double c_collision_p2 = (x3_p2 - bullet_coord1[i].X) * (y1_p2 - y3_p2) - (x1_p2 - x3_p2) * (y3_p2 - bullet_coord1[i].Y);
-
-                    //коллизия с пулей
-                    if (a_collision_p1 >= 0 && b_collision_p1 >= 0 && c_collision_p1 >= 0 || a_collision_p1 <= 0 && b_collision_p1 <= 0 && c_collision_p1 <= 0)
+                    if (points_per_round_p2 > points_per_round_p1)
                     {
-                        reset_p1();
-                        points_per_round_p2++;
+                        rounds_win_count_p2++;
+                        switch (rounds_win_count_p2)
+                        {
+                            case 1:
+                                rounds_p2_1.Fill = Brushes.White; break;
+                            case 2:
+                                rounds_p2_2.Fill = Brushes.White; break;
+                            case 3:
+                                rounds_p2_3.Fill = Brushes.White; break;
+                            case 4:
+                                rounds_p2_4.Fill = Brushes.White; break;
+                            case 5:
+                                rounds_p2_5.Fill = Brushes.White; break;
+                        }
+                    }
+                    points_per_round_p1 = 0;
+                    points_per_round_p2 = 0;
+                    rounds_text_p1.Text = points_per_round_p1.ToString();
+                    rounds_text_p2.Text = points_per_round_p2.ToString();
+                    if (rounds_win_count_p1 == 5)
+                    {
                         InitializeComponent();
-                        rounds_text_p2.Text = points_per_round_p2.ToString();
-                        Field.Children.Remove(bullet[i]);
-                        bullet[i].Points.Remove(bullet_coord1[i]);
-                        bullet[i].Points.Remove(bullet_coord2[i]);
-                        IsBulletFlying[i] = false;
-                        if (bulletc == 11) last_bullet_collised = true;
+                        match_end_text.Content = "Player 1 wins";
+                        res_butt.Visibility = Visibility.Visible;
+                        exit_butt.Visibility = Visibility.Visible;
+                        shotable = false;
                     }
-
-                    if (a_collision_p2 >= 0 && b_collision_p2 >= 0 && c_collision_p2 >= 0 || a_collision_p2 <= 0 && b_collision_p2 <= 0 && c_collision_p2 <= 0)
+                    if (rounds_win_count_p2 == 5)
                     {
-                        reset_p2();
-                        points_per_round_p1++;
                         InitializeComponent();
-                        rounds_text_p1.Text = points_per_round_p1.ToString();
-                        Field.Children.Remove(bullet[i]);
-                        bullet[i].Points.Remove(bullet_coord1[i]);
-                        bullet[i].Points.Remove(bullet_coord2[i]);
-                        IsBulletFlying[i] = false;
-                        if (bulletc == 11) last_bullet_collised = true;
+                        match_end_text.Content = "Player 2 wins";
+                        res_butt.Visibility = Visibility.Visible;
+                        exit_butt.Visibility = Visibility.Visible;
+                        shotable = false;
                     }
                 }
-            }
-
-            Field.Children.Remove(p1);
-            p1.Points.Remove(left_p1);
-            p1.Points.Remove(nose_p1);
-            p1.Points.Remove(right_p1);
-
-            Field.Children.Remove(p2);
-            p2.Points.Remove(left_p2);
-            p2.Points.Remove(nose_p2);
-            p2.Points.Remove(right_p2);
-
-            x0_p1 += velocityX_p1;
-            y0_p1 += velocityY_p1;
-            x2_p1 += velocityX_p1;
-            y2_p1 += velocityY_p1;
-            x1_p1 += velocityX_p1;
-            y1_p1 += velocityY_p1;
-            x3_p1 += velocityX_p1;
-            y3_p1 += velocityY_p1;
-
-            x0_p2 += velocityX_p2;
-            y0_p2 += velocityY_p2;
-            x2_p2 += velocityX_p2;
-            y2_p2 += velocityY_p2;
-            x1_p2 += velocityX_p2;
-            y1_p2 += velocityY_p2;
-            x3_p2 += velocityX_p2;
-            y3_p2 += velocityY_p2;
-
-            left_p1.X = x1_p1;
-            left_p1.Y = y1_p1;
-            nose_p1.X = x2_p1;
-            nose_p1.Y = y2_p1;
-            right_p1.X = x3_p1;
-            right_p1.Y = y3_p1;
-
-            left_p2.X = x1_p2;
-            left_p2.Y = y1_p2;
-            nose_p2.X = x2_p2;
-            nose_p2.Y = y2_p2;
-            right_p2.X = x3_p2;
-            right_p2.Y = y3_p2;
-
-            p1.Points.Add(left_p1);
-            p1.Points.Add(nose_p1);
-            p1.Points.Add(right_p1);
-            Field.Children.Add(p1);
-
-            p2.Points.Add(left_p2);
-            p2.Points.Add(nose_p2);
-            p2.Points.Add(right_p2);
-            Field.Children.Add(p2);
-
-            if (bulletc == 11 && last_bullet_collised)
-            {
-
-                reset_p1();
-                reset_p2();
-                reset_bullet();
-
-                if (points_per_round_p1 > points_per_round_p2)
-                {
-                    rounds_win_count_p1++;
-                    switch (rounds_win_count_p1)
-                    {
-                        case 1:
-                            rounds_p1_1.Fill = Brushes.Black; break;
-                        case 2:
-                            rounds_p1_2.Fill = Brushes.Black; break;
-                        case 3:
-                            rounds_p1_3.Fill = Brushes.Black; break;
-                        case 4:
-                            rounds_p1_4.Fill = Brushes.Black; break;
-                        case 5:
-                            rounds_p1_5.Fill = Brushes.Black; break;
-                    }
-                }
-
-                if (points_per_round_p2 > points_per_round_p1)
-                {
-                    rounds_win_count_p2++;
-                    switch (rounds_win_count_p2)
-                    {
-                        case 1:
-                            rounds_p2_1.Fill = Brushes.White; break;
-                        case 2:
-                            rounds_p2_2.Fill = Brushes.White; break;
-                        case 3:
-                            rounds_p2_3.Fill = Brushes.White; break;
-                        case 4:
-                            rounds_p2_4.Fill = Brushes.White; break;
-                        case 5:
-                            rounds_p2_5.Fill = Brushes.White; break;
-                    }
-                }
-
-
-                
-                points_per_round_p1 = 0;
-                points_per_round_p2 = 0;
-                rounds_text_p1.Text = points_per_round_p1.ToString();
-                rounds_text_p2.Text = points_per_round_p2.ToString();
-            }
-            time.Stop();
-            //deltaTime = 1 + time.ElapsedMilliseconds;
-            if(velocityX_p1 + velocityX_p2 + velocityY_p1 + velocityY_p2 != 0)
-            {
-                InitializeComponent();
-                rounds_end_text.Text = "";
-            }
+          
         }
 
         private void Field_Initialized(object sender, EventArgs e)
@@ -529,31 +569,38 @@ namespace Western
         
         public void Game1_KeyDown(object sender, KeyEventArgs e)
         {
-            
-            Stopwatch time_controllers = new Stopwatch();
-            time_controllers.Start();
             if (e.Key.ToString() == "d" || e.Key.ToString() == "D") rotation_p1 = !rotation_p1;
             if (e.Key == Key.Right) rotation_p2 = !rotation_p2;
 
-            if ((e.Key.ToString() == "w" || e.Key.ToString() == "W") && bullet_p1_count < 6)
+            if ((e.Key.ToString() == "w" || e.Key.ToString() == "W") && bullet_p1_count < 6 && shotable)
             {
                 shot_p1 = true;
                 Bullet();
             }
-            if (e.Key == Key.Up && bullet_p2_count < 6)
+            if (e.Key == Key.Up && bullet_p2_count < 6 && shotable)
             {
                 shot_p2 = true;
                 Bullet();
             }
-
-            time_controllers.Stop();
-            //deltaTime += time_controllers.ElapsedMilliseconds;
-            
         }
 
         private void Game1_Activated(object sender, EventArgs e)
         {
             
+        }
+
+        private void res_butt_Click(object sender, RoutedEventArgs e)
+        {
+            general_reset();
+            InitializeComponent();
+            match_end_text.Content = "";
+            res_butt.Visibility = Visibility.Hidden;
+            exit_butt.Visibility = Visibility.Hidden;
+        }
+
+        private void exit_butt_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

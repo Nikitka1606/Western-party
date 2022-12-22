@@ -6,14 +6,23 @@
         xmlns:local="clr-namespace:Western"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Background="Black" Topmost="True" >
-    <Grid>
-        <Button x:Name="Settings" Content="Settings" HorizontalAlignment="Left" Margin="119,233,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.486,1.735" Click="Settings_Click" Height="71" Width="128"/>
-        <Button x:Name="Start" Content="Start" HorizontalAlignment="Center" Margin="0,233,0,0" VerticalAlignment="Top" Background="White" Click="Start_Click" Height="71" Width="140">
+    <Grid Background="#FFFCDD76">
+        <Button x:Name="Start" Content="Start" HorizontalAlignment="Center" Margin="0,233,0,0" VerticalAlignment="Top" Background="#FFFCDD76" Click="Start_Click" Height="71" Width="140" FontFamily="SimSun-ExtB" FontSize="48" BorderBrush="#FFFCDD76">
             <Button.Style>
                 <Style/>
             </Button.Style>
         </Button>
-        <Button x:Name="Info" Content="Info" HorizontalAlignment="Left" Margin="554,233,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.643,-0.138" Click="Info_Click" Height="71" Width="127"/>
-        <Label Content="Western Party" HorizontalAlignment="Left" Margin="268,144,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="White" FontSize="36"/>
+        <Button x:Name="Info" Content="Info" HorizontalAlignment="Left" Margin="663,321,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.643,-0.138" Click="Info_Click" Height="71" Width="127" FontFamily="SimSun-ExtB" FontSize="48" Background="#FFFCDD76" BorderBrush="#FFFCDD76"/>
+        <Label Content="Western Party" HorizontalAlignment="Center" Margin="0,139,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="White" FontSize="72" FontFamily="SimSun-ExtB" Height="99" Width="496" FontWeight="Bold">
+            <Label.BorderBrush>
+                <SolidColorBrush Color="Black" Opacity="0"/>
+            </Label.BorderBrush>
+        </Label>
+        <Button x:Name="Difficulty" Content="Difficulty" HorizontalAlignment="Center" Margin="0,304,0,0" VerticalAlignment="Top" Background="#FFFCDD76" Click="Difficulty_Click" Height="56" Width="252" FontFamily="SimSun-ExtB" FontSize="36" BorderBrush="#FFFCDD76">
+            <Button.Style>
+                <Style/>
+            </Button.Style>
+        </Button>
+        <Label x:Name="diff_text" Content="1" HorizontalAlignment="Center" Margin="0,332,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="Black" FontSize="36" FontFamily="SimSun-ExtB" Height="84" Width="48" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" RenderTransformOrigin="0.536,0.565"/>
     </Grid>
 </Window>

@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="Information" Height="450" Width="800">
     <Grid>
-        
+        <Label Margin="366,277,366,127">Версия 1.0
+        </Label>
+        <Label Margin="282,170,208,157" Content="Создатели: студенты МАИ&#xD;&#xA;гр. М3О-232Б-21&#xD;&#xA;Халанский Никита &#xD;&#xA;Косов Иван" FontSize="18"/>
+        <Button x:Name="exit" Content="Exit" HorizontalAlignment="Left" Margin="663,353,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.643,-0.138" Click="Info_Click" Height="71" Width="127" FontFamily="SimSun-ExtB" FontSize="48" Background="white" BorderBrush="white"/>
+
     </Grid>
 </Window>

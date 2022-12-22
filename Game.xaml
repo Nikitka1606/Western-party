@@ -10,7 +10,7 @@
         <Canvas x:Name="Field" Background="#FFFCDD76" Initialized="Field_Initialized" Height="800" Width="650" HorizontalAlignment="Center"/>
         <TextBlock x:Name="rounds_text_p1" FontSize="48" Margin="11,682,610,50" TextAlignment="Center" Text="0"/>
         <TextBlock x:Name="rounds_text_p2" FontSize="48" Margin="611,50,10,681" TextAlignment="Center" Text="0"/>
-        <TextBlock x:Name="rounds_end_text" FontSize="48" Margin="-36,350,-36,350" TextAlignment="Center"/>
+        <Label x:Name="match_end_text" FontSize="48" Margin="0,400,0,0" Content="" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Black" Width="528" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         <Polyline Stroke="Black" Points="50, 50, 600, 50, 600, 750, 50, 750, 50, 50" />
         <Ellipse x:Name="rounds_p1_1" Fill="#FFFCDD76" Stroke="Black" Width="30" Height="30" Margin="10,760,610,10"/>
         <Ellipse x:Name="rounds_p1_2" Fill="#FFFCDD76" Stroke="Black" Width="30" Height="30" Margin="45,760,575,10"/>
@@ -22,6 +22,8 @@
         <Ellipse x:Name="rounds_p2_3" Fill="#FFFCDD76" Stroke="White" Width="30" Height="30" Margin="540,10,80,760"/>
         <Ellipse x:Name="rounds_p2_2" Fill="#FFFCDD76" Stroke="White" Width="30" Height="30" Margin="574,10,46,760"/>
         <Ellipse x:Name="rounds_p2_1" Fill="#FFFCDD76" Stroke="White" Width="30" Height="30" Margin="610,10,10,760" />
+        <Button x:Name="res_butt" Margin="191,474,304,263" Click="res_butt_Click" BorderBrush="#FFFCDD76" Background="#FFFCDD76" Content="Restart" FontSize="48" Visibility="Hidden"/>
+        <Button x:Name="exit_butt" Margin="365,474,205,263" Click="exit_butt_Click" BorderBrush="#FFFCDD76" Background="#FFFCDD76" Content="Exit" FontSize="48" Visibility="Hidden"/>
     </Grid>
 
 </Window>

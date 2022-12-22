@@ -21,5 +21,11 @@ namespace Western
         {
             InitializeComponent();
         }
+
+        private void Info_Click(object sender, RoutedEventArgs e)
+        {
+
+            this.Close();
+        }
     }
 }
