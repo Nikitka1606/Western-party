@@ -313,7 +313,6 @@ namespace Western
                 bullet_coord1.Add(new Point());
                 bullet_coord2.Add(new Point());
                 bullet.Add(new Polygon());
-                rounds_p1_5.Fill = Brushes.Black;
                 IsBulletFlying[bulletc] = true;
                 bullet_coord1[bulletc] = nose_p1;
                 bullet_coord2[bulletc] = new Point(nose_p1.X + (nose_p1.X - x0_p1) * 0.2, nose_p1.Y + (nose_p1.Y - y0_p1) * 0.2);
@@ -607,7 +606,7 @@ namespace Western
                     points_per_round_p2 = 0;
                     rounds_text_p1.Text = points_per_round_p1.ToString();
                     rounds_text_p2.Text = points_per_round_p2.ToString();
-                    if (rounds_win_count_p1 == 1)
+                    if (rounds_win_count_p1 == 5)
                     {                    
                         match_end_text.Content = "Player 1 wins";
                         res_butt.Visibility = Visibility.Visible;
