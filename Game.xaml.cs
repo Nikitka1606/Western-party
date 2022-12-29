@@ -34,28 +34,30 @@ namespace Western
         static double y2_ori;
         static double x3_ori;
         static double y3_ori;
-        static double speed = 0.4;
+        static double speed = 0.15;
         static double bullet_speed = 1;
         static double CosA;
         static double SinA;
         static double deltaTime = 1;
         static bool last_bullet_collised = false;
-        static double max_height = 750;
-        static double max_width = 600;
-        static double min_height = 50;
-        static double min_width = 50;
+        static double max_height = 750 - 13;
+        static double max_width = 600 - 13;
+        static double min_height = 50 + 13;
+        static double min_width = 50 + 13;
         static double players_scale = 0;
+        static double distance;
+        static double bounce = 0.08;
 
         //player 1 variables
         static int angle_p1 = 0;
         static double x0_p1 = min_width + 50;
         static double y0_p1 = max_height - 50;
         static double x1_p1 = x0_p1 - 15 * players_scale; //left
-        static double y1_p1 = y0_p1 + 27 * players_scale;
+        static double y1_p1 = y0_p1 + 20 * players_scale;
         static double x2_p1 = x0_p1; //nose
-        static double y2_p1 = y0_p1 - 8 * players_scale;
+        static double y2_p1 = y0_p1 - 15 * players_scale;
         static double x3_p1 = x0_p1 + 15 * players_scale; //right
-        static double y3_p1 = y0_p1 + 27 * players_scale;
+        static double y3_p1 = y0_p1 + 20 * players_scale;
         static double velocityX_p1 = 0;
         static double velocityY_p1 = 0;
         static int bullet_p1_count = 0;
@@ -66,6 +68,10 @@ namespace Western
         static bool rotation_p1 = false;
         static int points_per_round_p1 = 0;
         static int rounds_win_count_p1 = 0;
+        static double accelerationX_p1 = 1;
+        static double accelerationY_p1 = 1;
+        static double acceleration_compensationX_p1 = accelerationX_p1 / 5;
+        static double acceleration_compensationY_p1 = accelerationY_p1 / 5;
 
         //bullet of player 1
         static bool shot_p1 = false;
@@ -75,11 +81,11 @@ namespace Western
         static double x0_p2 = max_width - 50;
         static double y0_p2 = min_height + 50;
         static double x1_p2 = x0_p2 - 15 * players_scale; //left
-        static double y1_p2 = y0_p2 - 27 * players_scale;
+        static double y1_p2 = y0_p2 - 20 * players_scale;
         static double x2_p2 = x0_p2; //nose
-        static double y2_p2 = y0_p2 + 8 * players_scale;
+        static double y2_p2 = y0_p2 + 15 * players_scale;
         static double x3_p2 = x0_p2 + 15 * players_scale; //right
-        static double y3_p2 = y0_p2 - 27 * players_scale;
+        static double y3_p2 = y0_p2 - 20 * players_scale;
         static double velocityX_p2 = 0;
         static double velocityY_p2 = 0; 
         static int bullet_p2_count = 0;
@@ -90,6 +96,10 @@ namespace Western
         static bool rotation_p2 = false;
         static int points_per_round_p2 = 0;
         static int rounds_win_count_p2 = 0;
+        static double accelerationX_p2 = 1;
+        static double accelerationY_p2 = 1;
+        static double acceleration_compensationX_p2 = accelerationX_p2 / 5;
+        static double acceleration_compensationY_p2 = accelerationY_p2 / 5;
 
         //bullet of player 2
         static bool shot_p2 = false;
@@ -121,18 +131,18 @@ namespace Western
             }
 
             x1_p1 = x0_p1 - 15 * players_scale;
-            y1_p1 = y0_p1 + 27 * players_scale;
+            y1_p1 = y0_p1 + 20 * players_scale;
             x2_p1 = x0_p1;
-            y2_p1 = y0_p1 - 8 * players_scale;
+            y2_p1 = y0_p1 - 15 * players_scale;
             x3_p1 = x0_p1 + 15 * players_scale;
-            y3_p1 = y0_p1 + 27 * players_scale;
+            y3_p1 = y0_p1 + 20 * players_scale;
 
             x1_p2 = x0_p2 - 15 * players_scale;
-            y1_p2 = y0_p2 - 27 * players_scale;
+            y1_p2 = y0_p2 - 20 * players_scale;
             x2_p2 = x0_p2;
-            y2_p2 = y0_p2 + 8 * players_scale;
+            y2_p2 = y0_p2 + 15 * players_scale;
             x3_p2 = x0_p2 + 15 * players_scale;
-            y3_p2 = y0_p2 - 27 * players_scale;
+            y3_p2 = y0_p2 - 20 * players_scale;
 
             //отрисовка игроков
             p1.Points.Add(left_p1);
@@ -157,11 +167,11 @@ namespace Western
         {
             //вычисление положения точки поворота
             x1_ori = x0_p1 - 15 * players_scale;
-            y1_ori = y0_p1 + 27 * players_scale;
+            y1_ori = y0_p1 + 20 * players_scale;
             x2_ori = x0_p1;
-            y2_ori = y0_p1 - 8 * players_scale;
+            y2_ori = y0_p1 - 15 * players_scale;
             x3_ori = x0_p1 + 15 * players_scale;
-            y3_ori = y0_p1 + 27 * players_scale;
+            y3_ori = y0_p1 + 20 * players_scale;
             //поворот
             CosA = Math.Round(Math.Cos(angle_rad), 5);
             SinA = Math.Round(Math.Sin(angle_rad), 5);
@@ -178,11 +188,11 @@ namespace Western
         private void rotate_p2()
         {
             x1_ori = x0_p2 - 15 * players_scale;
-            y1_ori = y0_p2 + 27 * players_scale;
+            y1_ori = y0_p2 + 20 * players_scale;
             x2_ori = x0_p2;
-            y2_ori = y0_p2 - 8 * players_scale;
+            y2_ori = y0_p2 - 15 * players_scale;
             x3_ori = x0_p2 + 15 * players_scale;
-            y3_ori = y0_p2 + 27 * players_scale;
+            y3_ori = y0_p2 + 20 * players_scale;
 
             CosA = Math.Round(Math.Cos(angle_rad), 5);
             SinA = Math.Round(Math.Sin(angle_rad), 5);
@@ -204,11 +214,11 @@ namespace Western
             x0_p1 = min_width + 50;
             y0_p1 = max_height - 50;
             x1_p1 = x0_p1 - 15 * players_scale; //left
-            y1_p1 = y0_p1 + 27 * players_scale;
+            y1_p1 = y0_p1 + 20 * players_scale;
             x2_p1 = x0_p1; //nose
-            y2_p1 = y0_p1 - 8 * players_scale;
+            y2_p1 = y0_p1 - 15 * players_scale;
             x3_p1 = x0_p1 + 15 * players_scale; //right
-            y3_p1 = y0_p1 + 27 * players_scale;
+            y3_p1 = y0_p1 + 20 * players_scale;
             velocityX_p1 = 0;
             velocityY_p1 = 0;
             rotation_p1 = false;
@@ -220,11 +230,11 @@ namespace Western
             x0_p2 = max_width - 50;
             y0_p2 = min_height + 50;
             x1_p2 = x0_p2 - 15 * players_scale; //left
-            y1_p2 = y0_p2 - 27 * players_scale;
+            y1_p2 = y0_p2 - 20 * players_scale;
             x2_p2 = x0_p2; //nose
-            y2_p2 = y0_p2 + 8 * players_scale;
+            y2_p2 = y0_p2 + 15 * players_scale;
             x3_p2 = x0_p2 + 15 * players_scale; //right
-            y3_p2 = y0_p2 - 27 * players_scale;
+            y3_p2 = y0_p2 - 20 * players_scale;
             velocityX_p2 = 0;
             velocityY_p2 = 0;
             rotation_p2 = false;
@@ -341,8 +351,50 @@ namespace Western
                     angle_rad = (angle_p2 * Math.PI) / 180;
                     rotate_p2();
                 }
-                //коллизии со стенками
-                if (x0_p1 - 12 <= min_width || x0_p1 + 12 >= max_width)
+
+            distance = Math.Round(Math.Sqrt((x0_p1 - x0_p2) * (x0_p1 - x0_p2) + (y0_p1 - y0_p2) * (y0_p1 - y0_p2)), 1);
+
+            if (distance <= 25 * players_scale)
+            {
+                accelerationX_p1 = (x0_p1 - x2_p1 + x0_p2 - x2_p2) * bounce;
+                if (x0_p1 > x0_p2) accelerationX_p1 = -(x0_p1 - x2_p1 + x0_p2 - x2_p2) * bounce;
+                accelerationX_p2 = (x0_p2 - x2_p2 + x0_p1 - x2_p1) * bounce;
+                if (x0_p2 > x0_p1) accelerationX_p2 = -(x0_p2 - x2_p2 + x0_p1 - x2_p1) * bounce;
+                accelerationY_p1 = (y0_p1 - y2_p1 + y0_p2 - y2_p2) * bounce;
+                if (y0_p1 > y0_p2) accelerationY_p1 = -(y0_p1 - y2_p1 + y0_p2 - y2_p2) * bounce;
+                accelerationY_p2 = (y0_p2 - y2_p2 + y0_p1 - y2_p1) * bounce;
+                if (y0_p2 > y0_p1) accelerationY_p2 = -(y0_p2 - y2_p2 + y0_p1 - y2_p1) * bounce;
+
+                velocityX_p1 *= accelerationX_p1;
+                velocityY_p1 *= accelerationY_p1;
+                velocityX_p2 *= accelerationX_p2;
+                velocityY_p2 *= accelerationY_p2;
+
+                if (accelerationX_p1 == 1) acceleration_compensationX_p1 = Math.Abs(accelerationX_p1 / (accelerationX_p1 - 1));
+                if (accelerationY_p1 == 1) acceleration_compensationY_p1 = Math.Abs(accelerationY_p1 / (accelerationY_p1 - 1));
+                if (accelerationX_p2 == 1) acceleration_compensationX_p2 = Math.Abs(accelerationX_p2 / (accelerationX_p2 - 1));
+                if (accelerationY_p2 == 1) acceleration_compensationY_p2 = Math.Abs(accelerationY_p2 / (accelerationY_p2 - 1));
+            }
+            else
+            {
+                if (accelerationX_p1 > 1) accelerationX_p1 -= acceleration_compensationX_p1;
+                if (accelerationY_p1 > 1) accelerationY_p1 -= acceleration_compensationY_p1;
+                if (accelerationX_p1 < 1) accelerationX_p1 += acceleration_compensationX_p1;
+                if (accelerationY_p1 < 1) accelerationY_p1 += acceleration_compensationY_p1;
+
+                if (accelerationX_p2 < 1) accelerationX_p2 += acceleration_compensationX_p2;
+                if (accelerationY_p2 < 1) accelerationY_p2 += acceleration_compensationY_p2;
+                if (accelerationX_p2 > 1) accelerationX_p2 -= acceleration_compensationX_p2;
+                if (accelerationY_p2 > 1) accelerationY_p2 -= acceleration_compensationY_p2;
+
+                velocityX_p1 = (x2_p1 - x0_p1) * speed * accelerationX_p1;
+                velocityY_p1 = (y2_p1 - y0_p1) * speed * accelerationY_p1;
+                velocityX_p2 = (x2_p2 - x0_p2) * speed * accelerationX_p2;
+                velocityY_p2 = (y2_p2 - y0_p2) * speed * accelerationY_p2;
+            }
+
+            //коллизии со стенками
+            if (x0_p1 - 12 <= min_width || x0_p1 + 12 >= max_width)
                 {
                     velocityX_p1 = 0;
                     if ((x0_p1 - 12 <= min_width && (x2_p1 - x0_p1) > 0) || (x0_p1 + 12 >= max_width && (x2_p1 - x0_p1) < 0))

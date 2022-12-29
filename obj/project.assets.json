@@ -8,19 +8,24 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\IVAN\\.nuget\\packages\\": {}
+    "C:\\Users\\halni\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\IVAN\\Documents\\ДЗ МАИ\\Программирование\\Курсач\\Western-party\\Western.csproj",
+      "projectUniqueName": "C:\\Users\\halni\\Source\\Repos\\Western-party\\Western.csproj",
       "projectName": "Western",
-      "projectPath": "C:\\Users\\IVAN\\Documents\\ДЗ МАИ\\Программирование\\Курсач\\Western-party\\Western.csproj",
-      "packagesPath": "C:\\Users\\IVAN\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\IVAN\\Documents\\ДЗ МАИ\\Программирование\\Курсач\\Western-party\\obj\\",
+      "projectPath": "C:\\Users\\halni\\Source\\Repos\\Western-party\\Western.csproj",
+      "packagesPath": "C:\\Users\\halni\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\halni\\Source\\Repos\\Western-party\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\IVAN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\halni\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -28,6 +33,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
