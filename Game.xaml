@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Western"
         mc:Ignorable="d"
-        Title="Game" Height="816" Width="650" KeyDown="Game1_KeyDown" Activated="Game1_Activated" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
+        Title="Game" Height="816" Width="650" KeyDown="Game1_KeyDown" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
     <Grid Width="650" Height="800">
-        <Canvas x:Name="Field" Background="#FFFCDD76" Initialized="Field_Initialized" Height="800" Width="650" HorizontalAlignment="Center"/>
+        <Canvas x:Name="Field" Background="#FFFCDD76" Height="800" Width="650" HorizontalAlignment="Center"/>
         <TextBlock x:Name="rounds_text_p1" FontSize="48" Margin="11,682,610,50" TextAlignment="Center" Text="0"/>
         <TextBlock x:Name="rounds_text_p2" FontSize="48" Margin="611,50,10,681" TextAlignment="Center" Text="0"/>
         <Label x:Name="match_end_text" FontSize="48" Margin="0,400,0,0" Content="" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Black" Width="528" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>

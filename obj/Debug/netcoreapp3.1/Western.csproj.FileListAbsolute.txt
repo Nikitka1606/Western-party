@@ -76,3 +76,27 @@ C:\Users\halni\Documents\GitHub\Western-party\obj\Debug\netcoreapp3.1\Western.cs
 C:\Users\halni\Documents\GitHub\Western-party\obj\Debug\netcoreapp3.1\Western.dll
 C:\Users\halni\Documents\GitHub\Western-party\obj\Debug\netcoreapp3.1\Western.pdb
 C:\Users\halni\Documents\GitHub\Western-party\obj\Debug\netcoreapp3.1\Western.genruntimeconfig.cache
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\bin\Debug\netcoreapp3.1\Western.exe
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\bin\Debug\netcoreapp3.1\Western.deps.json
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\bin\Debug\netcoreapp3.1\Western.runtimeconfig.json
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\bin\Debug\netcoreapp3.1\Western.runtimeconfig.dev.json
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\bin\Debug\netcoreapp3.1\Western.dll
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\bin\Debug\netcoreapp3.1\Western.pdb
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Western.csproj.AssemblyReference.cache
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Game.g.cs
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Information.g.cs
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\MainWindow.g.cs
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\App.g.cs
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Western_MarkupCompile.cache
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Western_MarkupCompile.lref
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Game.baml
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Information.baml
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\MainWindow.baml
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Western.g.resources
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Western.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Western.AssemblyInfoInputs.cache
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Western.AssemblyInfo.cs
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Western.csproj.CoreCompileInputs.cache
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Western.dll
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Western.pdb
+C:\Users\IVAN\Documents\ДЗ МАИ\Программирование\Курсач\Western-party\obj\Debug\netcoreapp3.1\Western.genruntimeconfig.cache

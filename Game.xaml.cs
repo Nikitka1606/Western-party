@@ -40,8 +40,8 @@ namespace Western
         static double SinA;
         static double deltaTime = 1;
         static bool last_bullet_collised = false;
-        static double max_height = 800 - 50;
-        static double max_width = 650 - 50;
+        static double max_height = 750;
+        static double max_width = 600;
         static double min_height = 50;
         static double min_width = 50;
         static double players_scale = 0;
@@ -95,7 +95,6 @@ namespace Western
         static bool shot_p2 = false;
 
         //general bullet
-
         static double[] bullet_velocityX = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         static double[] bullet_velocityY = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         List<Point> bullet_coord1 = new List<Point>();
@@ -112,8 +111,6 @@ namespace Western
             timer.Tick += new EventHandler(MainGameTimerEvent);
             timer.Interval = new TimeSpan(0, 0, 0, 0, 1);
             timer.Start();
-
-            InitializeComponent();
             match_end_text.IsEnabled = true;
 
             switch (MainWindow.difficulty)
@@ -243,8 +240,7 @@ namespace Western
                 Field.Children.Remove(bullet[i]);
                 bullet[i].Points.Remove(bullet_coord1[i]);
                 bullet[i].Points.Remove(bullet_coord2[i]); 
-            }
-            
+            }           
             bullet_coord1.Clear();
             bullet_coord2.Clear();
             bullet.Clear();
@@ -267,7 +263,7 @@ namespace Western
             bullet_p2_count = 0;
             shotable = true;
             bullet.Clear();
-            InitializeComponent();
+            
             rounds_p1_1.Fill = default;
             rounds_p1_2.Fill = default;
             rounds_p1_3.Fill = default;
@@ -327,9 +323,10 @@ namespace Western
                 shot_p2 = false;
             }
         }
+
         private void MainGameTimerEvent(object sender, EventArgs e)
         {
-                if (rotation_p1)
+            if (rotation_p1)
                 {
                     angle_p1 += 3;
                     if (angle_p1 >= 360) angle_p1 -= 360;
@@ -398,7 +395,6 @@ namespace Western
                         bullet[i].Points.Add(bullet_coord2[i]);
                         Field.Children.Add(bullet[i]);
 
-
                         if (costc2.X <= min_width || costc2.Y <= min_height || costc2.X >= max_width || costc2.Y >= max_height)
                         {
                             Field.Children.Remove(bullet[i]);
@@ -421,7 +417,7 @@ namespace Western
                         {
                             reset_p1();
                             points_per_round_p2++;
-                            InitializeComponent();
+                            
                             rounds_text_p2.Text = points_per_round_p2.ToString();
                             Field.Children.Remove(bullet[i]);
                             bullet[i].Points.Remove(bullet_coord1[i]);
@@ -434,7 +430,7 @@ namespace Western
                         {
                             reset_p2();
                             points_per_round_p1++;
-                            InitializeComponent();
+                            
                             rounds_text_p1.Text = points_per_round_p1.ToString();
                             Field.Children.Remove(bullet[i]);
                             bullet[i].Points.Remove(bullet_coord1[i]);
@@ -444,6 +440,8 @@ namespace Western
                         }
                     }
                 }
+
+                
 
                 Field.Children.Remove(p1);
                 p1.Points.Remove(left_p1);
@@ -497,7 +495,8 @@ namespace Western
                 p2.Points.Add(right_p2);
                 Field.Children.Add(p2);
 
-                if (bulletc == 11 && last_bullet_collised)
+
+            if (bulletc == 11 && last_bullet_collised)
                 {
                     reset_p1();
                     reset_p2();
@@ -543,28 +542,21 @@ namespace Western
                     rounds_text_p1.Text = points_per_round_p1.ToString();
                     rounds_text_p2.Text = points_per_round_p2.ToString();
                     if (rounds_win_count_p1 == 5)
-                    {
-                        InitializeComponent();
+                    {                    
                         match_end_text.Content = "Player 1 wins";
                         res_butt.Visibility = Visibility.Visible;
                         exit_butt.Visibility = Visibility.Visible;
                         shotable = false;
                     }
                     if (rounds_win_count_p2 == 5)
-                    {
-                        InitializeComponent();
+                    {                      
                         match_end_text.Content = "Player 2 wins";
                         res_butt.Visibility = Visibility.Visible;
                         exit_butt.Visibility = Visibility.Visible;
                         shotable = false;
                     }
                 }
-          
-        }
 
-        private void Field_Initialized(object sender, EventArgs e)
-        {
-            
         }
         
         public void Game1_KeyDown(object sender, KeyEventArgs e)
@@ -584,15 +576,9 @@ namespace Western
             }
         }
 
-        private void Game1_Activated(object sender, EventArgs e)
-        {
-            
-        }
-
         private void res_butt_Click(object sender, RoutedEventArgs e)
         {
-            general_reset();
-            InitializeComponent();
+            general_reset();         
             match_end_text.Content = "";
             res_butt.Visibility = Visibility.Hidden;
             exit_butt.Visibility = Visibility.Hidden;

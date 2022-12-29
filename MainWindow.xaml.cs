@@ -23,6 +23,7 @@ namespace Western
     public partial class MainWindow : Window
     {
         static public double difficulty = 1;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -31,14 +32,6 @@ namespace Western
         private void Start_Click(object sender, RoutedEventArgs e)
         {
             Game win = new Game();
-            win.Topmost = true;
-            this.Close();
-            win.Show();
-        }
-
-        private void Settings_Click(object sender, RoutedEventArgs e)
-        {
-            Set win = new Set();
             win.Topmost = true;
             this.Close();
             win.Show();

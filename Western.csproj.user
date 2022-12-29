@@ -13,9 +13,6 @@
     <Compile Update="Information.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Set.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Game.xaml">
@@ -25,9 +22,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Set.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
