@@ -51,5 +51,10 @@ namespace Western
             InitializeComponent();
             diff_text.Content = difficulty.ToString();
         }
+
+        private void Exit_main_clock(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

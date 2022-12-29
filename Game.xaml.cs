@@ -35,18 +35,19 @@ namespace Western
         static double x3_ori;
         static double y3_ori;
         static double speed = 0.15;
-        static double bullet_speed = 1;
+        static double bullet_speed = 0.5;
         static double CosA;
         static double SinA;
         static double deltaTime = 1;
         static bool last_bullet_collised = false;
-        static double max_height = 750 - 13;
-        static double max_width = 600 - 13;
-        static double min_height = 50 + 13;
-        static double min_width = 50 + 13;
+        static double max_height = 750 - 30 * players_scale;
+        static double max_width = 600 - 30 * players_scale;
+        static double min_height = 50 + 30 * players_scale;
+        static double min_width = 50 + 30 * players_scale;
         static double players_scale = 0;
         static double distance;
         static double bounce = 0.08;
+        static public bool game_started = false;
 
         //player 1 variables
         static int angle_p1 = 0;
@@ -120,9 +121,15 @@ namespace Western
             DispatcherTimer timer = new DispatcherTimer();
             timer.Tick += new EventHandler(MainGameTimerEvent);
             timer.Interval = new TimeSpan(0, 0, 0, 0, 1);
-            timer.Start();
-            match_end_text.IsEnabled = true;
+            if (!game_started)
+                timer.Start();
+            else
+            {
+                game_started = true;
+            }
 
+            match_end_text.IsEnabled = true;
+            Game1.Visibility = Visibility.Visible;
             switch (MainWindow.difficulty)
             {
                 case 1: players_scale = 1.8; break;
@@ -143,6 +150,13 @@ namespace Western
             y2_p2 = y0_p2 + 15 * players_scale;
             x3_p2 = x0_p2 + 15 * players_scale;
             y3_p2 = y0_p2 - 20 * players_scale;
+
+            max_height = 750 - 8 * players_scale;
+            max_width = 600 - 8 * players_scale;
+            min_height = 50 + 8 * players_scale;
+            min_width = 50 + 8 * players_scale;
+
+            shotable = true;
 
             //отрисовка игроков
             p1.Points.Add(left_p1);
@@ -252,8 +266,11 @@ namespace Western
                 bullet[i].Points.Remove(bullet_coord2[i]); 
             }           
             bullet_coord1.Clear();
+            bullet_coord1.TrimExcess();
             bullet_coord2.Clear();
+            bullet_coord2.TrimExcess();
             bullet.Clear();
+            bullet.TrimExcess();
             bullet_coord1.Add(new Point());
             bullet_coord2.Add(new Point());
             bullet.Add(new Polygon());
@@ -289,13 +306,14 @@ namespace Western
         //функция появления пули
         private void Bullet()
         {
-            if (shot_p1 && velocityX_p1*velocityY_p1 != 0)
+            if (shot_p1)
             {
                 bullet_p1_count++;
                 bulletc++;
                 bullet_coord1.Add(new Point());
                 bullet_coord2.Add(new Point());
                 bullet.Add(new Polygon());
+                rounds_p1_5.Fill = Brushes.Black;
                 IsBulletFlying[bulletc] = true;
                 bullet_coord1[bulletc] = nose_p1;
                 bullet_coord2[bulletc] = new Point(nose_p1.X + (nose_p1.X - x0_p1) * 0.2, nose_p1.Y + (nose_p1.Y - y0_p1) * 0.2);
@@ -306,12 +324,12 @@ namespace Western
 
                 bullet[bulletc].Points.Add(bullet_coord1[bulletc]);
                 bullet[bulletc].Points.Add(bullet_coord2[bulletc]);
-                bullet[bulletc].Stroke = Brushes.Black;
+                bullet[bulletc].Stroke = Brushes.Red;
                 Field.Children.Add(bullet[bulletc]);
                 shot_p1 = false;
             }
 
-            if (shot_p2 && velocityX_p2 * velocityY_p2 != 0)
+            if (shot_p2)
             {
                 bullet_p2_count++;
                 bulletc++;
@@ -328,7 +346,7 @@ namespace Western
 
                 bullet[bulletc].Points.Add(bullet_coord1[bulletc]);
                 bullet[bulletc].Points.Add(bullet_coord2[bulletc]);
-                bullet[bulletc].Stroke = Brushes.Black;
+                bullet[bulletc].Stroke = Brushes.Red;
                 Field.Children.Add(bullet[bulletc]);
                 shot_p2 = false;
             }
@@ -337,20 +355,20 @@ namespace Western
         private void MainGameTimerEvent(object sender, EventArgs e)
         {
             if (rotation_p1)
-                {
-                    angle_p1 += 3;
-                    if (angle_p1 >= 360) angle_p1 -= 360;
-                    angle_rad = (angle_p1 * Math.PI) / 180;
-                    rotate_p1();
-                }
+            {
+                angle_p1 += 3;
+                if (angle_p1 >= 360) angle_p1 -= 360;
+                angle_rad = (angle_p1 * Math.PI) / 180;
+                rotate_p1();
+            }
 
-                if (rotation_p2)
-                {
-                    angle_p2 += 3;
-                    if (angle_p2 >= 360) angle_p2 -= 360;
-                    angle_rad = (angle_p2 * Math.PI) / 180;
-                    rotate_p2();
-                }
+            if (rotation_p2)
+            {
+                angle_p2 += 3;
+                if (angle_p2 >= 360) angle_p2 -= 360;
+                angle_rad = (angle_p2 * Math.PI) / 180;
+                rotate_p2();
+            }
 
             distance = Math.Round(Math.Sqrt((x0_p1 - x0_p2) * (x0_p1 - x0_p2) + (y0_p1 - y0_p2) * (y0_p1 - y0_p2)), 1);
 
@@ -365,18 +383,52 @@ namespace Western
                 accelerationY_p2 = (y0_p2 - y2_p2 + y0_p1 - y2_p1) * bounce;
                 if (y0_p2 > y0_p1) accelerationY_p2 = -(y0_p2 - y2_p2 + y0_p1 - y2_p1) * bounce;
 
-                velocityX_p1 *= accelerationX_p1;
-                velocityY_p1 *= accelerationY_p1;
-                velocityX_p2 *= accelerationX_p2;
-                velocityY_p2 *= accelerationY_p2;
-
                 if (accelerationX_p1 == 1) acceleration_compensationX_p1 = Math.Abs(accelerationX_p1 / (accelerationX_p1 - 1));
                 if (accelerationY_p1 == 1) acceleration_compensationY_p1 = Math.Abs(accelerationY_p1 / (accelerationY_p1 - 1));
                 if (accelerationX_p2 == 1) acceleration_compensationX_p2 = Math.Abs(accelerationX_p2 / (accelerationX_p2 - 1));
                 if (accelerationY_p2 == 1) acceleration_compensationY_p2 = Math.Abs(accelerationY_p2 / (accelerationY_p2 - 1));
             }
-            else
-            {
+
+            velocityX_p1 = (x2_p1 - x0_p1) * speed * accelerationX_p1;
+            velocityY_p1 = (y2_p1 - y0_p1) * speed * accelerationY_p1;
+            velocityX_p2 = (x2_p2 - x0_p2) * speed * accelerationX_p2;
+            velocityY_p2 = (y2_p2 - y0_p2) * speed * accelerationY_p2;
+
+            //коллизии со стенками
+            if (x0_p1 - 12 <= min_width || x0_p1 + 12 >= max_width)
+                {
+                    velocityX_p1 = 0;
+                    if ((x0_p1 - 12 <= min_width && (x2_p1 - x0_p1) > 0) || (x0_p1 + 12 >= max_width && (x2_p1 - x0_p1) < 0))
+                        velocityX_p1 = (x2_p1 - x0_p1) * speed * accelerationX_p1;
+                    if (x2_p1 - x0_p1 == 0)
+                        velocityX_p1 = 0;
+                }
+                if (y0_p1 - 12 <= min_height || y0_p1 + 12 >= max_height)
+                {
+                    velocityY_p1 = 0;
+                    if ((y0_p1 - 12 <= min_height && y2_p1 - y0_p1 > 0 || y0_p1 + 12 >= max_height && y2_p1 - y0_p1 < 0))
+                        velocityY_p1 = (y2_p1 - y0_p1) * speed * accelerationY_p1;
+                    if (y2_p1 - y0_p1 == 0)
+                        velocityY_p1 = 0;
+                }
+
+                if (x0_p2 - 12 <= min_width || x0_p2 + 12 >= max_width)
+                {
+                    velocityX_p2 = 0;
+                    if ((x0_p2 - 12 <= min_width && (x2_p2 - x0_p2) > 0) || (x0_p2 + 12 >= max_width && (x2_p2 - x0_p2) < 0))
+                        velocityX_p2 = (x2_p2 - x0_p2) * speed * accelerationX_p2;
+                    if (x2_p2 - x0_p2 == 0)
+                        velocityX_p2 = 0;
+                }
+                if (y0_p2 - 12 <= min_height || y0_p2 + 12 >= max_height)
+                {
+                    velocityY_p2 = 0;
+                    if ((y0_p2 - 12 <= min_height && y2_p2 - y0_p2 > 0 || y0_p2 + 12 >= max_height && y2_p2 - y0_p2 < 0))
+                        velocityY_p2 = (y2_p2 - y0_p2) * speed * accelerationY_p2;
+                    if (y2_p2 - y0_p2 == 0)
+                        velocityY_p2 = 0;
+                }
+
                 if (accelerationX_p1 > 1) accelerationX_p1 -= acceleration_compensationX_p1;
                 if (accelerationY_p1 > 1) accelerationY_p1 -= acceleration_compensationY_p1;
                 if (accelerationX_p1 < 1) accelerationX_p1 += acceleration_compensationX_p1;
@@ -387,53 +439,15 @@ namespace Western
                 if (accelerationX_p2 > 1) accelerationX_p2 -= acceleration_compensationX_p2;
                 if (accelerationY_p2 > 1) accelerationY_p2 -= acceleration_compensationY_p2;
 
-                velocityX_p1 = (x2_p1 - x0_p1) * speed * accelerationX_p1;
-                velocityY_p1 = (y2_p1 - y0_p1) * speed * accelerationY_p1;
-                velocityX_p2 = (x2_p2 - x0_p2) * speed * accelerationX_p2;
-                velocityY_p2 = (y2_p2 - y0_p2) * speed * accelerationY_p2;
-            }
+                
 
-            //коллизии со стенками
-            if (x0_p1 - 12 <= min_width || x0_p1 + 12 >= max_width)
-                {
-                    velocityX_p1 = 0;
-                    if ((x0_p1 - 12 <= min_width && (x2_p1 - x0_p1) > 0) || (x0_p1 + 12 >= max_width && (x2_p1 - x0_p1) < 0))
-                        velocityX_p1 = (x2_p1 - x0_p1) * speed * deltaTime;
-                    if (x2_p1 - x0_p1 == 0)
-                        velocityX_p1 = 0;
-                }
-                if (y0_p1 - 12 <= min_height || y0_p1 + 12 >= max_height)
-                {
-                    velocityY_p1 = 0;
-                    if ((y0_p1 - 12 <= min_height && y2_p1 - y0_p1 > 0 || y0_p1 + 12 >= max_height && y2_p1 - y0_p1 < 0))
-                        velocityY_p1 = (y2_p1 - y0_p1) * speed * deltaTime;
-                    if (y2_p1 - y0_p1 == 0)
-                        velocityY_p1 = 0;
-                }
-
-                if (x0_p2 - 12 <= min_width || x0_p2 + 12 >= max_width)
-                {
-                    velocityX_p2 = 0;
-                    if ((x0_p2 - 12 <= min_width && (x2_p2 - x0_p2) > 0) || (x0_p2 + 12 >= max_width && (x2_p2 - x0_p2) < 0))
-                        velocityX_p2 = (x2_p2 - x0_p2) * speed * deltaTime;
-                    if (x2_p2 - x0_p2 == 0)
-                        velocityX_p2 = 0;
-                }
-                if (y0_p2 - 12 <= min_height || y0_p2 + 12 >= max_height)
-                {
-                    velocityY_p2 = 0;
-                    if ((y0_p2 - 12 <= min_height && y2_p2 - y0_p2 > 0 || y0_p2 + 12 >= max_height && y2_p2 - y0_p2 < 0))
-                        velocityY_p2 = (y2_p2 - y0_p2) * speed * deltaTime;
-                    if (y2_p2 - y0_p2 == 0)
-                        velocityY_p2 = 0;
-                }
-
-                for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 12; i++)
                 {
                     if (IsBulletFlying[i])
                     {
                         //пересчёт положения пули, её отрисовка
-                        Field.Children.Remove(bullet[i]);
+                        
+                    Field.Children.Remove(bullet[i]);
                         bullet[i].Points.Remove(bullet_coord1[i]);
                         bullet[i].Points.Remove(bullet_coord2[i]);
 
@@ -447,7 +461,7 @@ namespace Western
                         bullet[i].Points.Add(bullet_coord2[i]);
                         Field.Children.Add(bullet[i]);
 
-                        if (costc2.X <= min_width || costc2.Y <= min_height || costc2.X >= max_width || costc2.Y >= max_height)
+                        if (costc2.X <= min_width - 8 * players_scale || costc2.Y <= min_height - 8 * players_scale || costc2.X >= max_width + 8 * players_scale || costc2.Y >= max_height + 8 * players_scale)
                         {
                             Field.Children.Remove(bullet[i]);
                             bullet[i].Points.Remove(bullet_coord1[i]);
@@ -593,7 +607,7 @@ namespace Western
                     points_per_round_p2 = 0;
                     rounds_text_p1.Text = points_per_round_p1.ToString();
                     rounds_text_p2.Text = points_per_round_p2.ToString();
-                    if (rounds_win_count_p1 == 5)
+                    if (rounds_win_count_p1 == 1)
                     {                    
                         match_end_text.Content = "Player 1 wins";
                         res_butt.Visibility = Visibility.Visible;
@@ -618,11 +632,17 @@ namespace Western
 
             if ((e.Key.ToString() == "w" || e.Key.ToString() == "W") && bullet_p1_count < 6 && shotable)
             {
+                accelerationX_p1 = (x2_p1 - x0_p1) * bounce;
+                if (x2_p1 > x0_p1) accelerationX_p1 = -(x2_p1 - x0_p1) * bounce;
+                accelerationY_p1 = (y2_p1 - y0_p1) * bounce;
+                if (y2_p1 > y0_p1) accelerationY_p1 = -(y2_p1 - y0_p1) * bounce;
                 shot_p1 = true;
                 Bullet();
             }
             if (e.Key == Key.Up && bullet_p2_count < 6 && shotable)
             {
+                accelerationX_p2 = -Math.Abs(x2_p2 - x0_p2) * bounce;
+                accelerationY_p2 = -Math.Abs(y2_p2 - y0_p2) * bounce;
                 shot_p2 = true;
                 Bullet();
             }

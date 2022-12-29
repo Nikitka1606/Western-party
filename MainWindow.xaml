@@ -12,7 +12,7 @@
                 <Style/>
             </Button.Style>
         </Button>
-        <Button x:Name="Info" Content="Info" HorizontalAlignment="Left" Margin="663,321,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.643,-0.138" Click="Info_Click" Height="71" Width="127" FontFamily="SimSun-ExtB" FontSize="48" Background="#FFFCDD76" BorderBrush="#FFFCDD76"/>
+        <Button x:Name="Info" Content="Info" HorizontalAlignment="Left" Margin="663,289,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.643,-0.138" Click="Info_Click" Height="71" Width="127" FontFamily="SimSun-ExtB" FontSize="48" Background="#FFFCDD76" BorderBrush="#FFFCDD76"/>
         <Label Content="Western Party" HorizontalAlignment="Center" Margin="0,139,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="White" FontSize="72" FontFamily="SimSun-ExtB" Height="99" Width="496" FontWeight="Bold">
             <Label.BorderBrush>
                 <SolidColorBrush Color="Black" Opacity="0"/>
@@ -24,5 +24,6 @@
             </Button.Style>
         </Button>
         <Label x:Name="diff_text" Content="1" HorizontalAlignment="Center" Margin="0,332,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="Black" FontSize="36" FontFamily="SimSun-ExtB" Height="84" Width="48" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" RenderTransformOrigin="0.536,0.565"/>
+        <Button x:Name="Exit_main" Content="Exit" HorizontalAlignment="Left" Margin="663,353,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.643,-0.138" Click="Exit_main_clock" Height="71" Width="127" FontFamily="SimSun-ExtB" FontSize="48" Background="#FFFCDD76" BorderBrush="#FFFCDD76"/>
     </Grid>
 </Window>
