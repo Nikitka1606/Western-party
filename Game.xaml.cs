@@ -34,7 +34,7 @@ namespace Western
         static double y2_ori;
         static double x3_ori;
         static double y3_ori;
-        static double speed = 0.15;
+        static double speed = 0.075;
         static double bullet_speed = 0.5;
         static double CosA;
         static double SinA;
@@ -48,6 +48,7 @@ namespace Western
         static double distance;
         static double bounce = 0.08;
         static public bool game_started = false;
+        static int bounce_count = 0;
 
         //player 1 variables
         static int angle_p1 = 0;
@@ -373,70 +374,84 @@ namespace Western
 
             if (distance <= 25 * players_scale)
             {
-                accelerationX_p1 = (x0_p1 - x2_p1 + x0_p2 - x2_p2) * bounce;
-                if (x0_p1 > x0_p2) accelerationX_p1 = -(x0_p1 - x2_p1 + x0_p2 - x2_p2) * bounce;
-                accelerationX_p2 = (x0_p2 - x2_p2 + x0_p1 - x2_p1) * bounce;
-                if (x0_p2 > x0_p1) accelerationX_p2 = -(x0_p2 - x2_p2 + x0_p1 - x2_p1) * bounce;
-                accelerationY_p1 = (y0_p1 - y2_p1 + y0_p2 - y2_p2) * bounce;
-                if (y0_p1 > y0_p2) accelerationY_p1 = -(y0_p1 - y2_p1 + y0_p2 - y2_p2) * bounce;
-                accelerationY_p2 = (y0_p2 - y2_p2 + y0_p1 - y2_p1) * bounce;
-                if (y0_p2 > y0_p1) accelerationY_p2 = -(y0_p2 - y2_p2 + y0_p1 - y2_p1) * bounce;
+                bounce_count++;
+                if (bounce_count > 4) bounce_count = 4;
+
+                accelerationX_p1 = (x0_p1 - x2_p1 + x0_p2 - x2_p2) * bounce * (4 - bounce_count) / 4;
+                if (x0_p1 > x0_p2) accelerationX_p1 = -(x0_p1 - x2_p1 + x0_p2 - x2_p2) * bounce * (4 - bounce_count) / 4;
+                accelerationX_p2 = (x0_p2 - x2_p2 + x0_p1 - x2_p1) * bounce * (4 - bounce_count) / 4;
+                if (x0_p2 > x0_p1) accelerationX_p2 = -(x0_p2 - x2_p2 + x0_p1 - x2_p1) * bounce * (4 - bounce_count) / 4;
+                accelerationY_p1 = (y0_p1 - y2_p1 + y0_p2 - y2_p2) * bounce * (4 - bounce_count) / 4;
+                if (y0_p1 > y0_p2) accelerationY_p1 = -(y0_p1 - y2_p1 + y0_p2 - y2_p2) * bounce * (4 - bounce_count) / 4;
+                accelerationY_p2 = (y0_p2 - y2_p2 + y0_p1 - y2_p1) * bounce * (4 - bounce_count) / 4;
+                if (y0_p2 > y0_p1) accelerationY_p2 = -(y0_p2 - y2_p2 + y0_p1 - y2_p1) * bounce * (4 - bounce_count) / 4;
 
                 if (accelerationX_p1 == 1) acceleration_compensationX_p1 = Math.Abs(accelerationX_p1 / (accelerationX_p1 - 1));
                 if (accelerationY_p1 == 1) acceleration_compensationY_p1 = Math.Abs(accelerationY_p1 / (accelerationY_p1 - 1));
                 if (accelerationX_p2 == 1) acceleration_compensationX_p2 = Math.Abs(accelerationX_p2 / (accelerationX_p2 - 1));
                 if (accelerationY_p2 == 1) acceleration_compensationY_p2 = Math.Abs(accelerationY_p2 / (accelerationY_p2 - 1));
             }
+            else
+            {
+                if (distance >= 100) bounce_count = 0;
+            }
+
+            if (velocityX_p1 == 0) accelerationX_p1 = 1;
+            if (velocityY_p1 == 0) accelerationY_p1 = 1;
+            if (velocityX_p2 == 0) accelerationX_p2 = 1;
+            if (velocityY_p2 == 0) accelerationY_p2 = 1;
+
 
             velocityX_p1 = (x2_p1 - x0_p1) * speed * accelerationX_p1;
             velocityY_p1 = (y2_p1 - y0_p1) * speed * accelerationY_p1;
             velocityX_p2 = (x2_p2 - x0_p2) * speed * accelerationX_p2;
             velocityY_p2 = (y2_p2 - y0_p2) * speed * accelerationY_p2;
 
+
             //коллизии со стенками
             if (x0_p1 - 12 <= min_width || x0_p1 + 12 >= max_width)
-                {
+            {
+                velocityX_p1 = 0;
+                if ((x0_p1 - 12 <= min_width && (x2_p1 - x0_p1) > 0) || (x0_p1 + 12 >= max_width && (x2_p1 - x0_p1) < 0))
+                    velocityX_p1 = (x2_p1 - x0_p1) * speed * accelerationX_p1;
+                if (x2_p1 - x0_p1 == 0)
                     velocityX_p1 = 0;
-                    if ((x0_p1 - 12 <= min_width && (x2_p1 - x0_p1) > 0) || (x0_p1 + 12 >= max_width && (x2_p1 - x0_p1) < 0))
-                        velocityX_p1 = (x2_p1 - x0_p1) * speed * accelerationX_p1;
-                    if (x2_p1 - x0_p1 == 0)
-                        velocityX_p1 = 0;
-                }
-                if (y0_p1 - 12 <= min_height || y0_p1 + 12 >= max_height)
-                {
+            }
+            if (y0_p1 - 12 <= min_height || y0_p1 + 12 >= max_height)
+            {
+                velocityY_p1 = 0;
+                if ((y0_p1 - 12 <= min_height && y2_p1 - y0_p1 > 0 || y0_p1 + 12 >= max_height && y2_p1 - y0_p1 < 0))
+                    velocityY_p1 = (y2_p1 - y0_p1) * speed * accelerationY_p1;
+                if (y2_p1 - y0_p1 == 0)
                     velocityY_p1 = 0;
-                    if ((y0_p1 - 12 <= min_height && y2_p1 - y0_p1 > 0 || y0_p1 + 12 >= max_height && y2_p1 - y0_p1 < 0))
-                        velocityY_p1 = (y2_p1 - y0_p1) * speed * accelerationY_p1;
-                    if (y2_p1 - y0_p1 == 0)
-                        velocityY_p1 = 0;
-                }
+            }
 
-                if (x0_p2 - 12 <= min_width || x0_p2 + 12 >= max_width)
-                {
+            if (x0_p2 - 12 <= min_width || x0_p2 + 12 >= max_width)
+            {
+                velocityX_p2 = 0;
+                if ((x0_p2 - 12 <= min_width && (x2_p2 - x0_p2) > 0) || (x0_p2 + 12 >= max_width && (x2_p2 - x0_p2) < 0))
+                    velocityX_p2 = (x2_p2 - x0_p2) * speed * accelerationX_p2;
+                if (x2_p2 - x0_p2 == 0)
                     velocityX_p2 = 0;
-                    if ((x0_p2 - 12 <= min_width && (x2_p2 - x0_p2) > 0) || (x0_p2 + 12 >= max_width && (x2_p2 - x0_p2) < 0))
-                        velocityX_p2 = (x2_p2 - x0_p2) * speed * accelerationX_p2;
-                    if (x2_p2 - x0_p2 == 0)
-                        velocityX_p2 = 0;
-                }
-                if (y0_p2 - 12 <= min_height || y0_p2 + 12 >= max_height)
-                {
+            }
+            if (y0_p2 - 12 <= min_height || y0_p2 + 12 >= max_height)
+            {
+                velocityY_p2 = 0;
+                if ((y0_p2 - 12 <= min_height && y2_p2 - y0_p2 > 0 || y0_p2 + 12 >= max_height && y2_p2 - y0_p2 < 0))
+                    velocityY_p2 = (y2_p2 - y0_p2) * speed * accelerationY_p2;
+                if (y2_p2 - y0_p2 == 0)
                     velocityY_p2 = 0;
-                    if ((y0_p2 - 12 <= min_height && y2_p2 - y0_p2 > 0 || y0_p2 + 12 >= max_height && y2_p2 - y0_p2 < 0))
-                        velocityY_p2 = (y2_p2 - y0_p2) * speed * accelerationY_p2;
-                    if (y2_p2 - y0_p2 == 0)
-                        velocityY_p2 = 0;
-                }
+            }
 
-                if (accelerationX_p1 > 1) accelerationX_p1 -= acceleration_compensationX_p1;
-                if (accelerationY_p1 > 1) accelerationY_p1 -= acceleration_compensationY_p1;
-                if (accelerationX_p1 < 1) accelerationX_p1 += acceleration_compensationX_p1;
-                if (accelerationY_p1 < 1) accelerationY_p1 += acceleration_compensationY_p1;
+            if (accelerationX_p1 > 3) accelerationX_p1 -= acceleration_compensationX_p1;
+            if (accelerationY_p1 > 3) accelerationY_p1 -= acceleration_compensationY_p1;
+            if (accelerationX_p1 < 3) accelerationX_p1 += acceleration_compensationX_p1;
+            if (accelerationY_p1 < 3) accelerationY_p1 += acceleration_compensationY_p1;
 
-                if (accelerationX_p2 < 1) accelerationX_p2 += acceleration_compensationX_p2;
-                if (accelerationY_p2 < 1) accelerationY_p2 += acceleration_compensationY_p2;
-                if (accelerationX_p2 > 1) accelerationX_p2 -= acceleration_compensationX_p2;
-                if (accelerationY_p2 > 1) accelerationY_p2 -= acceleration_compensationY_p2;
+            if (accelerationX_p2 < 3) accelerationX_p2 += acceleration_compensationX_p2;
+            if (accelerationY_p2 < 3) accelerationY_p2 += acceleration_compensationY_p2;
+            if (accelerationX_p2 > 3) accelerationX_p2 -= acceleration_compensationX_p2;
+            if (accelerationY_p2 > 3) accelerationY_p2 -= acceleration_compensationY_p2;
 
                 
 
@@ -631,10 +646,8 @@ namespace Western
 
             if ((e.Key.ToString() == "w" || e.Key.ToString() == "W") && bullet_p1_count < 6 && shotable)
             {
-                accelerationX_p1 = (x2_p1 - x0_p1) * bounce;
-                if (x2_p1 > x0_p1) accelerationX_p1 = -(x2_p1 - x0_p1) * bounce;
-                accelerationY_p1 = (y2_p1 - y0_p1) * bounce;
-                if (y2_p1 > y0_p1) accelerationY_p1 = -(y2_p1 - y0_p1) * bounce;
+                accelerationX_p1 = -Math.Abs(x2_p1 - x0_p1) * bounce;
+                accelerationY_p1 = -Math.Abs(y2_p1 - y0_p1) * bounce;
                 shot_p1 = true;
                 Bullet();
             }
